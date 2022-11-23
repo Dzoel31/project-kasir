@@ -1,69 +1,75 @@
 import os
 import pandas as pd
-import prettytable as pt
 
+def save_data(data_barang):
+    saved_data = pd.DataFrame(data_barang, columns=[
+                            "nama_barang", "jenis_barang", "harga"])
+    saved_data.to_csv("data_barang.csv", index=False)
 
+def curr_data(new_data):
+    current_data = pd.read_csv("data_barang.csv")
+    data_barang = current_data.values.tolist()
 
-def menu_edit():
-    def save_data(data_barang):
-        saved_data = pd.DataFrame(data_barang, columns=[
-                             "nama_barang", "jenis_barang", "harga"])
-        saved_data.to_csv("data_barang.csv", index=False)
+    data_barang.append(new_data)
+    save_data(data_barang)
 
-    def curr_data(new_data):
-        current_data = pd.read_csv("data_barang.csv")
-        data_barang = current_data.values.tolist()
+def add_data():
+    nama_barang = input("Masukkan nama barang : ")
+    jns_barang = input("Masukkan jenis barang : ")
+    harga = int(input("Masukkan harga barang : "))
+    new_data = [nama_barang, jns_barang, harga]
+    curr_data(new_data)
 
-        data_barang.append(new_data)
-        save_data(data_barang)
-
-    def add_data():
-        nama_barang = input("Masukkan nama barang : ")
-        jns_barang = input("Masukkan jenis barang : ")
-        harga = int(input("Masukkan harga barang : "))
-        new_data = [nama_barang, jns_barang, harga]
-        curr_data(new_data)
-
-    def show_data():
-        current_data = pd.read_csv("data_barang.csv")
-        data_barang = current_data.values.tolist()
-        if data_barang == []:
-            print("Tidak ada data")
-            return "Tidak ada data"
-        else:
-            table_barang()
-        
-    def update_harga():
-        if show_data() == "Tidak ada data":
-            print("Tidak ada data")
-            print("Buat data terlebih dahulu!")
-        else:
-            try:
-                current_data = pd.read_csv("data_barang.csv")
-                data_barang = current_data.values.tolist()
-                pilih = int(input("Pilih data yang mau di perbaharui : "))
-                upd_harga = int(input("Masukkan harga baru : "))
-
-                data_barang[pilih][2] = upd_harga
-                save_data(data_barang)
-
-            except ValueError:
-                print("Input harus Integer!!!")
-                update_harga()
-                
-    def delete_data():
-        show_data()
+def show_data():
+    current_data = pd.read_csv("data_barang.csv")
+    data_barang = current_data.values.tolist()
+    if data_barang == []:
+        print("Tidak ada data")
+        return "Tidak ada data"
+    else:
+        print("-"*49)
+        print("\n|{:^4}|{:^15}|{:^15}|{:^15}|".format(
+            "No", "Nama Barang", "Jenis Barang", "Harga"))
+        print("-"*49)
+        for i in range(len(data_barang)):
+            print("|{:^4}|{:^15}|{:^15}|{:^15}|".format(i,
+            data_barang[i][0],
+            data_barang[i][1],
+            data_barang[i][2]))
+        print("-"*49)
+    
+def update_harga():
+    if show_data() == "Tidak ada data":
+        print("Tidak ada data")
+        print("Buat data terlebih dahulu!")
+    else:
         try:
             current_data = pd.read_csv("data_barang.csv")
             data_barang = current_data.values.tolist()
-            pilih = int(input("Pilih data yang mau dihapus : "))
-            data_barang.pop(pilih)
-            print("Data berhasil dihapus!!")
+            pilih = int(input("Pilih data yang mau di perbaharui : "))
+            upd_harga = int(input("Masukkan harga baru : "))
+
+            data_barang[pilih][2] = upd_harga
             save_data(data_barang)
+
         except ValueError:
-            print("Salah inputan")
-            delete_data()
+            print("Input harus Integer!!!")
+            update_harga()
+            
+def delete_data():
+    show_data()
+    try:
+        current_data = pd.read_csv("data_barang.csv")
+        data_barang = current_data.values.tolist()
+        pilih = int(input("Pilih data yang mau dihapus : "))
+        data_barang.pop(pilih)
+        print("Data berhasil dihapus!!")
+        save_data(data_barang)
+    except ValueError:
+        print("Salah inputan")
+        delete_data()
     
+def menu_edit():
     os.system('cls')
     print("-"*20)
     print("[1] Buat Data/Tambah Data")
@@ -95,11 +101,6 @@ def menu_edit():
     else:
         menu()
 
-def table_barang():
-    open_file = open("data_barang.csv")
-    table_barang = pt.from_csv(open_file)
-    print(table_barang)
-
 def pembelian():
     os.system('cls')
     current_data = pd.read_csv("data_barang.csv")
@@ -112,8 +113,16 @@ def pembelian():
     ulang = True
     while ulang == True:
         os.system("cls")
-        table_barang()
-
+        print("-"*54)
+        print("|{:^4}|{:^15}|{:^15}|{:^15}|".format(
+                    "No", "Nama Barang", "Jenis Barang", "Harga"))
+        print("-"*54)
+        for i in range(len(data_barang)):
+            print("|{:^4}|{:^15}|{:^15}|{:^15}|".format(i,
+            data_barang[i][0],
+            data_barang[i][1],
+            data_barang[i][2]))
+        print("-"*54)
         barang_cust,jumlah_beli = input("Masukkan barang yg dibeli (Namabarang,jumlah beli): ").split(",")
 
         new_barang = [barang_cust,int(jumlah_beli)]
