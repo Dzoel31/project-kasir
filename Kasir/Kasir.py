@@ -3,10 +3,14 @@ from modulekasir import inputdata,pembelian,pengunjung #Import module kasir
 
 def menu():
     os.system('cls') #Membersihkan terminal
-    print("[1] Edit Data Barang")
+    print("Selamat Datang di Menu Restoran Python")
+    print("Apa yang ingin Anda lakukan?")
+    print("="*28)
+    print("[1] Edit Data Menu Restoran")
     print("[2] Hitung Pembelian")
     print("[3] Lihat Daftar Pengunjung")
     print("[0] Exit")
+    print("="*28)
     pilih_menu = int(input("Pilih menu >> "))
     if pilih_menu == 1:
         inputdata.menu_edit()#Menampilkan menu edit

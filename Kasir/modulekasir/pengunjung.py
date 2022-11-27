@@ -31,16 +31,16 @@ def lihat_data():
         pemasukan = 0 #Menghitung pemasukan yang diberikan setiap pelanggan
         for m in range(jumlah):
             pemasukan += total[indeks + m]#Menambah jumlah pemasukan dari total harga menu
-        print("|{:^21}|{:^21}|{:^20}|".format(tanggal[indeks],nomor,pemasukan))#Output
+        print("|{:^21}|{:^21}|{:>20}|".format(tanggal[indeks],nomor,pemasukan))#Output
     print("-"*66)
-    print("|{:<21}|{:^21}|{:^20}|".format("Banyak Pembeli",len(no_order),sum(total)))#Output banyak pembeli dan total pemasukan dari keseluruhan pelanggan
+    print("|{:^21}|{:^21}|{:>20}|".format("Banyak Pembeli",len(no_order),sum(total)))#Output banyak pembeli dan total pemasukan dari keseluruhan pelanggan
     print("-"*66)
-    print("|{:^4}|{:<15}|{:^12}|{:^17}|{:>12}|".format("No","Nama menu","Harga","Jumlah Terjual","Total Harga"))
+    print("|{:^4}|{:^15}|{:^12}|{:^17}|{:^12}|".format("No","Nama menu","Harga","Jumlah Terjual","Total Harga"))
     print("-"*66)
     for n in range(len(menu)):#For loop untuk menghitung jumlah menu yang terjual
         Total_harga = harga_menu[n] * menu_jumlah[menu[n]]#Menghitung total pemasukan yang diberikan setiap menu
         print("|{:^4}|{:<15}|{:^12}|{:^17}|{:>12}|".format(n+1,menu[n],harga_menu[n],menu_jumlah[menu[n]],Total_harga))#Output
     print("-"*66)
-    print("|{:^51}|{:^12}|".format("Total Penjualan",sum(total)))#output total
+    print("|{:^51}|{:>12}|".format("Total Penjualan",sum(total)))#output total
     print("-"*66)
     input("Enter untuk kembali")

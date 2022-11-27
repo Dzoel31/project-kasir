@@ -64,8 +64,15 @@ def update_harga():
             pilih = int(input("Pilih data yang mau di perbaharui : "))#memilih daftar menu yang akan diganti harganya
             upd_harga = int(input("Masukkan harga baru : "))#Input harga baru
 
-            data_menu[pilih][2] = upd_harga #harga lama diganti dengan harga baru
-            save_data(data_menu)#Save data
+            print("Nama menu  : ",data_menu[pilih][0])
+            print("Harga lama : ",data_menu[pilih][2])
+            print("Harga Baru : ",upd_harga)
+            check = input("Apakah anda yakin ingin mengubah harga? [Y/N] : ")#Konfirmasi perubahan harga
+            if check == "Y" : #Data akan di update jika Y
+                data_menu[pilih][2] = upd_harga #harga lama diganti dengan harga baru
+                save_data(data_menu)#Save data
+            else :#Jika N proses akan dibatalkan dan kembali ke menu
+                print("Perubahan harga dibatalkan")
 
         except ValueError: #JIka input value salah, program akan meminta input ulang
             print("Input harus Integer!!!")
@@ -78,16 +85,23 @@ def delete_data():
         current_data = pd.read_csv("data/data_menu.csv")#baca file
         data_menu = current_data.values.tolist()
         pilih = int(input("Pilih data yang mau dihapus : "))#Input data yang dihapus
-        data_menu.pop(pilih)
-        print("Data berhasil dihapus!!")
-        save_data(data_menu) #Simpan data
+
+        check = input(f"Anda akan menghapus menu {data_menu[pilih][0]} [Y/N] : ") #Konfirmasi hapus data
+        if check == "Y": #Jika Y data akan dihapus
+            data_menu.pop(pilih)
+            print("Data berhasil dihapus!!")
+            save_data(data_menu) #Simpan data
+        else: #Jika N proses akan dibatalkan dan kembali ke menu
+            print("Proses dibatalkan")
+
     except ValueError:
         print("Salah inputan")
         delete_data()# Meminta input kembali jika Value salah
 
 #Menu
 def menu_edit():
-    while (True): #looping menu 
+    status = "Y"
+    while status != "N": #looping menu selama status "Y"
         os.system('cls')#Untuk clear terminal
         print("[1] Buat Data/Tambah Data")
         print("[2] Lihat Data")
@@ -106,12 +120,7 @@ def menu_edit():
         elif pilih_menu == 5:
             break #Mengakhiri menu
         else:
-            print("Salah input!") 
-            menu_edit()
+            print("Salah input!")
 
         #Mengecek apakah akan melanjutkan process atau pindah menu
-        check_status = input("Next process?[Y/N] => ")
-        if (check_status == "Y") or (check_status == "y"):
-            menu_edit()
-        else:
-            break
+        status = input("Next process?[Y/N] => ") #Jika "N" maka program ini akan berhenti dan kembali ke menu utama
