@@ -6,6 +6,7 @@ def lihat_data():
     read_data_pengunjung = pd.read_csv("data/daftar_pengunjung.csv",usecols=["No Order","Nama Menu","Jumlah","Total Harga","Tanggal"])#Membaca data sesuai kolom yang diinginkan
     list_data_raw = read_data_pengunjung.values.tolist()#diubah kedalam bentuk list
     no_order_raw,nama_menu,jumlah,total,tanggal= map(list,zip(*list_data_raw))# Zip memisahkan item per index dalam bentuk tuple. Map berfungsi mengubah tuple menjadi list.
+    
     no_order = list(dict.fromkeys(no_order_raw))#Kode ini untuk menghapus item duplicate pada list, cara kerjanya yaitu :  item pada list_order_raw diubah menjadi dictionary key (dictionary key tidak bisa duplicate), lalu diubah menjadi list
 
     read_data_menu = pd.read_csv("data/data_menu.csv", usecols=["nama_menu","harga"])#Membaca data sesuai kolom yang diinginkan

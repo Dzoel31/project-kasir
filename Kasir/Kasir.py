@@ -3,7 +3,7 @@ from modulekasir import inputdata,pembelian,pengunjung #Import module kasir
 
 def menu():
     os.system('cls') #Membersihkan terminal
-    print("Selamat Datang di Menu Restoran Python")
+    print("Selamat Datang di Menu Restoran Laperpedia")
     print("Apa yang ingin Anda lakukan?")
     print("="*28)
     print("[1] Edit Data Menu Restoran")
