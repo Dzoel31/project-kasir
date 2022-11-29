@@ -95,7 +95,7 @@ def delete_data():
             print("Proses dibatalkan")
 
     except ValueError:
-        print("Salah inputan")
+        print("Input Nomor Urutan Menu!")
         delete_data()# Meminta input kembali jika Value salah
 
 #Menu
