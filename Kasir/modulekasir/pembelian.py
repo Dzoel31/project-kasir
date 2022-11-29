@@ -93,7 +93,7 @@ def pembelian():
         input("Tidak ada data atau file tidak ditemukan! \n press enter")
 
 def save_data_pengunjung(list_pembelian_total):
-    read_data = pd.read_csv("data/daftar_pengunjung.csv")#Membaca file daftar pengunjung
+    read_data = pd.read_csv("daftar_pengunjung.csv")#Membaca file daftar pengunjung
     list_data_pengunjung = read_data.values.tolist()#Diubah ke bentuk list
     
     for data in list_pembelian_total:
