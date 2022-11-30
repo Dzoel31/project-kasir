@@ -3,7 +3,7 @@ import pandas as pd
 
 # Fungsi simpan data
 def save_data(sort_data_menu):
-    saved_data = pd.DataFrame(sort_data_menu, columns=["nama_menu", "jenis_menu", "harga"])#data menu yang sudah di input dadi sortir diubah ke dalam bentuk dataframe. Dataframe adalah data yg berbentuk 2 dimensi 
+    saved_data = pd.DataFrame(sort_data_menu, columns=["Nama Menu", "Jenis Menu", "Harga"])#data menu yang sudah di input dadi sortir diubah ke dalam bentuk dataframe. Dataframe adalah data yg berbentuk 2 dimensi 
     #variabel columns ["nama_menu","Jenis_menu"] berarti urutan data yang diinput akan dimasukkan ke masing-masing kolom
     saved_data.to_csv("data/data_menu.csv", index=False)#Data yang telah diubah ke bentuk dataframe akan disimpan ke file csv. Index = False membuat index tidak akan muncul/dimasukkan ke file csv
 
@@ -49,12 +49,13 @@ def show_data():
             "No", "Nama Menu", "Jenis menu", "Harga"))
         print("-"*54)
         for i in range(len(data_menu)):
-            print("|{:^4}|{:^15}|{:^15}|{:^15}|".format(i,nama_menu[i],jenis_menu[i],harga[i]))#Menampilkan output sesuai indeks 
+            print("|{:^4}|{:<15}|{:^15}|{:>15}|".format(i,nama_menu[i],jenis_menu[i],harga[i]))#Menampilkan output sesuai indeks 
         print("-"*54)
 
 #Fungsi untuk mengubah harga
 def update_harga():
-    if show_data() == "Tidak ada data": #Cek apakah fungsi show_data me-return nilai. jika iya blok ini akan dijalankan
+    check_data = show_data()
+    if check_data == "Tidak ada data": #Cek apakah fungsi show_data me-return nilai. jika iya blok ini akan dijalankan
         print("Buat data terlebih dahulu!")
     else:
         current_data = pd.read_csv("data/data_menu.csv")
@@ -80,21 +81,24 @@ def update_harga():
 
 #Fungsi untuk menghapus data
 def delete_data():
-    show_data()#Menampilkan data
-    current_data = pd.read_csv("data/data_menu.csv")#baca file
-    data_menu = current_data.values.tolist()
-    try:
-        pilih = int(input("Pilih data yang mau dihapus : "))#Input data yang dihapus
-        check = input(f"Anda akan menghapus menu {data_menu[pilih][0]} [Y/N] : ") #Konfirmasi hapus data
-        if check == "Y": #Jika Y data akan dihapus
-            data_menu.pop(pilih)
-            print("Data berhasil dihapus!!")
-            save_data(data_menu) #Simpan data
-        else: #Jika N proses akan dibatalkan dan kembali ke menu
-            print("Proses dibatalkan")
-    except ValueError:
-        print("Input urutannya!")
-        delete_data()# Meminta input kembali jika Value salah
+    check_data = show_data()
+    if  check_data == "Tidak ada data":
+        print("Buat data terlebih dahulu!")#Menampilkan data
+    else :
+        current_data = pd.read_csv("data/data_menu.csv")#baca file
+        data_menu = current_data.values.tolist()
+        try:
+            pilih = int(input("Pilih data yang mau dihapus : "))#Input data yang dihapus
+            check = input(f"Anda akan menghapus menu {data_menu[pilih][0]} [Y/N] : ").upper() #Konfirmasi hapus data
+            if check == "Y": #Jika Y data akan dihapus
+                data_menu.pop(pilih)
+                print("Data berhasil dihapus!!")
+                save_data(data_menu) #Simpan data
+            else: #Jika N proses akan dibatalkan dan kembali ke menu
+                print("Proses dibatalkan")
+        except ValueError:
+            print("Input urutannya!")
+            delete_data()# Meminta input kembali jika Value salah
 
 
 #Menu
@@ -122,4 +126,4 @@ def menu_edit():
             print("Salah input!")
 
         #Mengecek apakah akan melanjutkan process atau pindah menu
-        status = input("Next process?[Y/N] => ") #Jika "N" maka program ini akan berhenti dan kembali ke menu utama
+        status = input("Next process?[Y/N] => ").upper() #Jika "N" maka program ini akan berhenti dan kembali ke menu utama
