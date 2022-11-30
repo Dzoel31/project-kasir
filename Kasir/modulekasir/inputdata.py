@@ -1,20 +1,17 @@
 import os 
 import pandas as pd
 
-# Fungsi simpan data
+
 def save_data(sort_data_menu):
-    saved_data = pd.DataFrame(sort_data_menu, columns=["Nama Menu", "Jenis Menu", "Harga"])#data menu yang sudah di input dadi sortir diubah ke dalam bentuk dataframe. Dataframe adalah data yg berbentuk 2 dimensi 
-    #variabel columns ["nama_menu","Jenis_menu"] berarti urutan data yang diinput akan dimasukkan ke masing-masing kolom
-    saved_data.to_csv("data/data_menu.csv", index=False)#Data yang telah diubah ke bentuk dataframe akan disimpan ke file csv. Index = False membuat index tidak akan muncul/dimasukkan ke file csv
+    saved_data = pd.DataFrame(sort_data_menu, columns=["Nama Menu", "Jenis Menu", "Harga"])
+    saved_data.to_csv("data/data_menu.csv", index=False)
 
-#Fungsi untuk membaca dan menambah data
 def current_data(new_data):
-    current_data = pd.read_csv("data/data_menu.csv")#Membaca data pada file csv dan bertipe dataframe
-    data_menu = current_data.values.tolist()#Diubah ke bentuk list karena 2 dimensi maka list yg terbentuk nested list
+    current_data = pd.read_csv("data/data_menu.csv")
+    data_menu = current_data.values.tolist()
 
-    data_menu.append(new_data)#Menambah data baru ke list
+    data_menu.append(new_data)
 
-    #Blok program sorting
     for i in range(len(data_menu)):
         for j in range(len(data_menu)-i-1):
             if data_menu[j][1] > data_menu[j+1][1]:
@@ -23,89 +20,82 @@ def current_data(new_data):
                 data_menu[j+1] = temp
 
     sort_data_menu = data_menu
-    save_data(sort_data_menu) #data yang sudah di sorting akan disimpan
+    save_data(sort_data_menu) 
 
-#Fungsi untuk meminta user memasukkan menu
 def add_data():
     nama_menu = input("Masukkan nama menu : ")
     jns_menu = input("Masukkan jenis [Makanan/Minuman] : ")
     harga = int(input("Masukkan harga menu : "))
-    new_data = [nama_menu, jns_menu, harga] #menu yang diinput dimasukkan ke dalam list
-    current_data(new_data)#Memanggil fungsi curr_data untuk menyimpan input ke dalam file csv
+    new_data = [nama_menu, jns_menu, harga] 
+    current_data(new_data)
 
-#Fungsi untuk menampilkan data yang sudah disimpan
 def show_data():
     current_data = pd.read_csv("data/data_menu.csv")
     data_menu = current_data.values.tolist()
-    if data_menu == []: #Jika data masih kosong blok if akan dijalankan
+    if data_menu == []: 
         print("Tidak ada data")
-        return "Tidak ada data" #Return string "Tidak ada data"
-    else: #Jika terdapat data, maka data akan ditampilkan
-        nama_menu,jenis_menu,harga = map(list,zip(*data_menu)) # Zip memisahkan item per index dalam bentuk tuple. Map berfungsi mengubah tuple menjadi list.
-
-        #Desain Tabel
+        return "Tidak ada data" 
+    else: 
+        nama_menu,jenis_menu,harga = map(list,zip(*data_menu)) 
+        
         print("-"*54)
         print("|{:^4}|{:^15}|{:^15}|{:^15}|".format(
             "No", "Nama Menu", "Jenis menu", "Harga"))
         print("-"*54)
         for i in range(len(data_menu)):
-            print("|{:^4}|{:<15}|{:^15}|{:>15}|".format(i,nama_menu[i],jenis_menu[i],harga[i]))#Menampilkan output sesuai indeks 
+            print("|{:^4}|{:<15}|{:^15}|{:>15}|".format(i,nama_menu[i],jenis_menu[i],harga[i]))
         print("-"*54)
 
-#Fungsi untuk mengubah harga
 def update_harga():
     check_data = show_data()
-    if check_data == "Tidak ada data": #Cek apakah fungsi show_data me-return nilai. jika iya blok ini akan dijalankan
+    if check_data == "Tidak ada data": 
         print("Buat data terlebih dahulu!")
     else:
         current_data = pd.read_csv("data/data_menu.csv")
         data_menu = current_data.values.tolist()
-        try: #Menggunakan error handling agar program tidak berhenti saat user salah input
-            pilih = int(input("Pilih data yang mau di perbaharui : "))#memilih daftar menu yang akan diganti harganya
-            upd_harga = int(input("Masukkan harga baru : "))#Input harga baru
+        try: 
+            pilih = int(input("Pilih data yang mau di perbaharui : "))
+            upd_harga = int(input("Masukkan harga baru : "))
 
             print("Nama menu  : ",data_menu[pilih][0])
             print("Harga lama : ",data_menu[pilih][2])
             print("Harga Baru : ",upd_harga)
-            check = input("Apakah anda yakin ingin mengubah harga? [Y/N] : ")#Konfirmasi perubahan harga
-            if check == "Y" : #Data akan di update jika Y
-                data_menu[pilih][2] = upd_harga #harga lama diganti dengan harga baru
+            check = input("Apakah anda yakin ingin mengubah harga? [Y/N] : ").upper()
+            if check == "Y" : 
+                data_menu[pilih][2] = upd_harga 
                 print("Harga berhasil diubah")
-                save_data(data_menu)#Save data
-            else :#Jika N proses akan dibatalkan dan kembali ke menu
+                save_data(data_menu)
+            else :
                 print("Perubahan harga dibatalkan")
 
-        except ValueError: #JIka input value salah, program akan meminta input ulang
+        except ValueError: 
             print("Input harus Integer!!!")
             update_harga()
 
-#Fungsi untuk menghapus data
 def delete_data():
     check_data = show_data()
     if  check_data == "Tidak ada data":
-        print("Buat data terlebih dahulu!")#Menampilkan data
+        print("Buat data terlebih dahulu!")
     else :
-        current_data = pd.read_csv("data/data_menu.csv")#baca file
+        current_data = pd.read_csv("data/data_menu.csv")
         data_menu = current_data.values.tolist()
         try:
-            pilih = int(input("Pilih data yang mau dihapus : "))#Input data yang dihapus
-            check = input(f"Anda akan menghapus menu {data_menu[pilih][0]} [Y/N] : ").upper() #Konfirmasi hapus data
-            if check == "Y": #Jika Y data akan dihapus
+            pilih = int(input("Pilih data yang mau dihapus : "))
+            check = input(f"Anda akan menghapus menu {data_menu[pilih][0]} [Y/N] : ").upper() 
+            if check == "Y": 
                 data_menu.pop(pilih)
                 print("Data berhasil dihapus!!")
-                save_data(data_menu) #Simpan data
-            else: #Jika N proses akan dibatalkan dan kembali ke menu
+                save_data(data_menu) 
+            else: 
                 print("Proses dibatalkan")
         except ValueError:
             print("Input urutannya!")
-            delete_data()# Meminta input kembali jika Value salah
+            delete_data()
 
-
-#Menu
 def menu_edit():
     status = "Y"
-    while status != "N": #looping menu selama status "Y"
-        os.system('cls')#Untuk clear terminal
+    while status != "N": 
+        os.system('cls')
         print("[1] Buat Data/Tambah Data")
         print("[2] Lihat Data")
         print("[3] Update Harga")
@@ -113,17 +103,16 @@ def menu_edit():
         print("[5] Menu Sebelumnya")
         pilih_menu = int(input("Pilih menu : "))
         if pilih_menu == 1:
-            add_data()#Memanggil fungsi tambah data
+            add_data()
         elif pilih_menu == 2:
-            show_data()#Untuk melihat data
+            show_data()
         elif pilih_menu == 3:
-            update_harga()#Update harga menu
+            update_harga()
         elif pilih_menu == 4:
-            delete_data()#Menghaous data
+            delete_data()
         elif pilih_menu == 5:
-            break #Mengakhiri menu
+            break 
         else:
             print("Salah input!")
 
-        #Mengecek apakah akan melanjutkan process atau pindah menu
-        status = input("Next process?[Y/N] => ").upper() #Jika "N" maka program ini akan berhenti dan kembali ke menu utama
+        status = input("Next process?[Y/N] => ").upper() 

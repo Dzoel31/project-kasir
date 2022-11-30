@@ -1,8 +1,8 @@
 import os
-from modulekasir import inputdata,pembelian,pengunjung #Import module kasir
+from modulekasir import inputdata, pembelian, pengunjung
 
 def menu():
-    os.system('cls') #Membersihkan terminal
+    os.system('cls')
     print("Selamat Datang di Menu Restoran Laperpedia")
     print("Apa yang ingin Anda lakukan?")
     print("="*28)
@@ -13,17 +13,18 @@ def menu():
     print("="*28)
     pilih_menu = int(input("Pilih menu >> "))
     if pilih_menu == 1:
-        inputdata.menu_edit()#Menampilkan menu edit
-        menu()# Jika proses pada menu sebelumnya selesai, kode ini akan dijalankan. Sehingga akan kembali ke menu utama
+        inputdata.menu_edit()
+        menu()
     elif pilih_menu == 2:
-        pembelian.pembelian()#Menampilkan program untuk menghitung pembelian
+        pembelian.pembelian()
         menu()
     elif pilih_menu == 3:
-        pengunjung.lihat_data()#Melihat data transaksi
+        pengunjung.lihat_data()
         menu()
     elif pilih_menu == 0:
-        exit()#Program berhenti
-    else:#Jika salah input maka program akan minta input ulang
+        exit()
+    else:
         print("Input salah! masukkan ulang!")
         menu()
+
 menu()
