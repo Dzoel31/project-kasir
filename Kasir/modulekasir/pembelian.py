@@ -59,7 +59,6 @@ def pembelian():
                 input()
                 pembelian() 
         
-        
         menu_beli2 = list(dict.fromkeys(menu_beli))
         menu_jumlah = dict.fromkeys(menu_beli,0)
         for h in range(len(menu_beli)): 

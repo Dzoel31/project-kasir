@@ -11,20 +11,23 @@ def menu():
     print("[3] Lihat Daftar Pengunjung")
     print("[0] Exit")
     print("="*28)
-    pilih_menu = int(input("Pilih menu >> "))
-    if pilih_menu == 1:
-        inputdata.menu_edit()
+    try : 
+        pilih_menu = int(input("Pilih menu >> "))
+        if pilih_menu == 1:
+            inputdata.menu_edit()
+            menu()
+        elif pilih_menu == 2:
+            pembelian.pembelian()
+            menu()
+        elif pilih_menu == 3:
+            pengunjung.lihat_data()
+            menu()
+        elif pilih_menu == 0:
+            exit()
+        else:
+            input("Input salah! masukkan ulang!\n Enter untuk mengulang!")
+            menu()
+    except ValueError:
+        input("Input harus integer!\n Enter untuk mengulang!")
         menu()
-    elif pilih_menu == 2:
-        pembelian.pembelian()
-        menu()
-    elif pilih_menu == 3:
-        pengunjung.lihat_data()
-        menu()
-    elif pilih_menu == 0:
-        exit()
-    else:
-        print("Input salah! masukkan ulang!")
-        menu()
-
 menu()
