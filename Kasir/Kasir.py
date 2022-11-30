@@ -26,5 +26,4 @@ def menu():
     else:#Jika salah input maka program akan minta input ulang
         print("Input salah! masukkan ulang!")
         menu()
-
 menu()

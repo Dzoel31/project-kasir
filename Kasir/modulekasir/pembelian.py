@@ -42,7 +42,7 @@ def pembelian():
                         "No", "Nama Menu", "Jenis Menu", "Harga"))
             print("-"*54)
             for i in range(len(data_menu)):
-                print("|{:^4}|{:^15}|{:^15}|{:>15}|".format(i,nama_menu[i],jenis_menu[i],harga[i]))#Menampilkan daftar menu menggunakan perulangan for 
+                print("|{:^4}|{:<15}|{:^15}|{:>15}|".format(i,nama_menu[i],jenis_menu[i],harga[i]))#Menampilkan daftar menu menggunakan perulangan for 
             print("-"*54)
             menu,jumlah = input("Masukkan menu yg dibeli dengan format (NamaMenu,jumlah beli): ").split(",")#Input pembelian yang dipisah dengan koma
             if menu in nama_menu: #Mengecek apakah menu yang dibeli ada di database. Jika ada blok ini akan dijalankan
@@ -78,7 +78,7 @@ def pembelian():
             index = nama_menu.index(menu_beli2[k])
             total_harga = menu_jumlah[menu_beli2[k]] * harga[index]
             total_bayar += total_harga #Menghitung total bayar
-            print("|{:^4}|{:^15}|{:^12}|{:^12}|{:>12}|".format(k,menu_beli2[k],harga[index],menu_jumlah[menu_beli2[k]],total_harga))
+            print("|{:^4}|{:<15}|{:^12}|{:^12}|{:>12}|".format(k,menu_beli2[k],harga[index],menu_jumlah[menu_beli2[k]],total_harga))
             list_pembelian = [nomor_order,menu_beli2[k],harga[index],menu_jumlah[menu_beli2[k]],total_harga,tanggal]#Setiap penghitungan dimasukkan ke dalam list ini
             list_pembelian_total.append(list_pembelian) 
         print("-"*61)
@@ -91,7 +91,7 @@ def pembelian():
 
     except (ValueError,FileNotFoundError): #Blok ini di eksekusi jika data pada database kosong atau kesalahan path file
         input("Tidak ada data atau file tidak ditemukan! \n press enter")
-
+        
 def save_data_pengunjung(list_pembelian_total):
     read_data = pd.read_csv("data/daftar_pengunjung.csv")#Membaca file daftar pengunjung
     list_data_pengunjung = read_data.values.tolist()#Diubah ke bentuk list
