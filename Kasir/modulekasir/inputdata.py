@@ -114,5 +114,5 @@ def menu_edit():
             break 
         else:
             print("Salah input!")
-
+        
         status = input("Next process?[Y/N] => ").upper()
