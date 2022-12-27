@@ -1,5 +1,5 @@
 import os
-from modulekasir import inputdata, pembelian, pengunjung
+from modulekasir import inputdata,pembelian,pengunjung
 
 def menu():
     os.system('cls')

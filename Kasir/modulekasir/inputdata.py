@@ -1,14 +1,35 @@
 import os 
 import pandas as pd
+from collections import namedtuple
 
+def getpaths():
+    pathlist = []
+    script_path = "data"
+    for root, dirs, files in os.walk("C:\\"):
+        for name in dirs:
+            if name == script_path:
+                pathlist.append(os.path.join(root,name))
+    for path in pathlist: 
+        if path.endswith("Kasir\\data"):
+            return path
+
+def read_data_menu():
+    currentPath = getpaths()
+    read_data = pd.read_csv(f"{currentPath}\\data_menu.csv")
+    data_menu = read_data.values.tolist()
+    nama_menu,jenis_menu,harga = map(list,zip(*data_menu))
+    DataMenu = namedtuple("ListDataMenu",["data_menu","nama_menu","jenis_menu","harga"])
+
+    return DataMenu (data_menu,nama_menu,jenis_menu,harga)
 
 def save_data(sort_data_menu):
+    currentPath = getpaths()
     saved_data = pd.DataFrame(sort_data_menu, columns=["Nama Menu", "Jenis Menu", "Harga"])
-    saved_data.to_csv("data/data_menu.csv", index=False)
+    saved_data.to_csv(f"{currentPath}\\data_menu.csv", index=False)
 
-def current_data(new_data):
-    current_data = pd.read_csv("data/data_menu.csv")
-    data_menu = current_data.values.tolist()
+def process_data(new_data):
+    Data = read_data_menu()
+    data_menu = Data.data_menu
 
     data_menu.append(new_data)
 
@@ -20,30 +41,28 @@ def current_data(new_data):
                 data_menu[j+1] = temp
 
     sort_data_menu = data_menu
-    save_data(sort_data_menu) 
+    
+    save_data(sort_data_menu)
 
 def add_data():
     nama_menu = input("Masukkan nama menu : ")
     jns_menu = input("Masukkan jenis [Makanan/Minuman] : ")
     harga = int(input("Masukkan harga menu : "))
     new_data = [nama_menu, jns_menu, harga] 
-    current_data(new_data)
+    process_data(new_data)
 
 def show_data():
-    current_data = pd.read_csv("data/data_menu.csv")
-    data_menu = current_data.values.tolist()
-    if data_menu == []: 
+    data = read_data_menu()
+    if data.data_menu == []: 
         print("Tidak ada data")
         return "Tidak ada data" 
     else: 
-        nama_menu,jenis_menu,harga = map(list,zip(*data_menu)) 
-        
         print("-"*54)
         print("|{:^4}|{:^15}|{:^15}|{:^15}|".format(
             "No", "Nama Menu", "Jenis menu", "Harga"))
         print("-"*54)
-        for i in range(len(data_menu)):
-            print("|{:^4}|{:<15}|{:^15}|{:>15}|".format(i,nama_menu[i],jenis_menu[i],harga[i]))
+        for i in range(len(data.data_menu)):
+            print("|{:^4}|{:<15}|{:^15}|{:>15}|".format(i,data.nama_menu[i],data.jenis_menu[i],data.harga[i]))
         print("-"*54)
 
 def update_harga():
@@ -51,20 +70,19 @@ def update_harga():
     if check_data == "Tidak ada data": 
         print("Buat data terlebih dahulu!")
     else:
-        current_data = pd.read_csv("data/data_menu.csv")
-        data_menu = current_data.values.tolist()
+        data = read_data_menu()
         try: 
             pilih = int(input("Pilih data yang mau di perbaharui : "))
             upd_harga = int(input("Masukkan harga baru : "))
 
-            print("Nama menu  : ",data_menu[pilih][0])
-            print("Harga lama : ",data_menu[pilih][2])
+            print("Nama menu  : ",data.data_menu[pilih][0])
+            print("Harga lama : ",data.data_menu[pilih][2])
             print("Harga Baru : ",upd_harga)
             check = input("Apakah anda yakin ingin mengubah harga? [Y/N] : ").upper()
             if check == "Y" : 
-                data_menu[pilih][2] = upd_harga 
+                data.data_menu[pilih][2] = upd_harga 
                 print("Harga berhasil diubah")
-                save_data(data_menu)
+                save_data(data.data_menu)
             else :
                 print("Perubahan harga dibatalkan")
 
@@ -77,15 +95,14 @@ def delete_data():
     if  check_data == "Tidak ada data":
         print("Buat data terlebih dahulu!")
     else :
-        current_data = pd.read_csv("data/data_menu.csv")
-        data_menu = current_data.values.tolist()
+        data = read_data_menu()
         try:
             pilih = int(input("Pilih data yang mau dihapus : "))
-            check = input(f"Anda akan menghapus menu {data_menu[pilih][0]} [Y/N] : ").upper() 
+            check = input(f"Anda akan menghapus menu {data.data_menu[pilih][0]} [Y/N] : ").upper() 
             if check == "Y": 
-                data_menu.pop(pilih)
+                data.data_menu.pop(pilih)
                 print("Data berhasil dihapus!!")
-                save_data(data_menu) 
+                save_data(data.data_menu) 
             else: 
                 print("Proses dibatalkan")
         except ValueError:
