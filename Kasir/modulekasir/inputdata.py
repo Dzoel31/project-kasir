@@ -3,29 +3,28 @@ import pandas as pd
 from collections import namedtuple
 
 def getpaths():
-    pathlist = []
-    script_path = "data"
-    for root, dirs, files in os.walk("C:\\"):
-        for name in dirs:
-            if name == script_path:
-                pathlist.append(os.path.join(root,name))
-    for path in pathlist: 
-        if path.endswith("Kasir\\data"):
-            return path
+    script_path = os.path.split(os.path.dirname(__file__))[0]
+    return script_path
 
 def read_data_menu():
     currentPath = getpaths()
-    read_data = pd.read_csv(f"{currentPath}\\data_menu.csv")
+    read_data = pd.read_csv(f"{currentPath}\\data\\data_menu.csv")
     data_menu = read_data.values.tolist()
     nama_menu,jenis_menu,harga = map(list,zip(*data_menu))
-    DataMenu = namedtuple("ListDataMenu",["data_menu","nama_menu","jenis_menu","harga"])
+    DataMenu = namedtuple("ListDataMenu",["data_menu",
+    "nama_menu",
+    "jenis_menu",
+    "harga"])
 
-    return DataMenu (data_menu,nama_menu,jenis_menu,harga)
-
+    return DataMenu (data_menu,
+    nama_menu,
+    jenis_menu,
+    harga)
+    
 def save_data(sort_data_menu):
     currentPath = getpaths()
     saved_data = pd.DataFrame(sort_data_menu, columns=["Nama Menu", "Jenis Menu", "Harga"])
-    saved_data.to_csv(f"{currentPath}\\data_menu.csv", index=False)
+    saved_data.to_csv(f"{currentPath}\\data\\data_menu.csv", index=False)
 
 def process_data(new_data):
     Data = read_data_menu()
